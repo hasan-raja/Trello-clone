@@ -7,13 +7,26 @@ class App extends Component {
   render() {
     const { lists } = this.props;
     return (
-      <div className="App" style={{ backgroundColor: "#e1e1e3" }}>
+      <div
+        className="App"
+        style={{
+          backgroundColor: "#e1e1e3",
+          backgroundSize: "contain",
+          width: "100vw",
+          height: "100vh",
+        }}
+      >
         <h1>Hello Aj</h1>
         <div style={styles.listsContainer}>
           {lists.map((list) => (
-            <TrelloList title={list.title} cards={list.cards} key={list.id} />
+            <TrelloList
+              listId={list.id}
+              title={list.title}
+              cards={list.cards}
+              key={list.id}
+            />
           ))}
-          <TrelloActionButton list/>
+          <TrelloActionButton list />
         </div>
       </div>
     );
