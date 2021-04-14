@@ -2,19 +2,40 @@ import React, { Component } from "react";
 import TrelloList from "./TrelloList";
 import TrelloActionButton from "./TrelloActionButton";
 import { connect } from "react-redux";
-import { DragDropContext } from "react-beautiful-dnd";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { sort } from "../actions";
+import styled from "styled-components";
 
+const ListContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 class App extends Component {
+  onDragEnd = (result) => {
+    //reordering logic ends
+    const { destination, source, draggableId,type} = result;
 
-  onDragEnd=()=>{
+    if (!destination) {
+      return;
+    }
 
-  }
+    this.props.dispatch(
+      sort(
+        source.droppableId,
+        destination.droppableId,
+        source.index,
+        destination.index,
+        draggableId,
+        type
+      )
+    );
+  };
 
   render() {
     const { lists } = this.props;
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
-        <div
+        {/* <div
           className="App"
           style={{
             backgroundColor: "#e1e1e3",
@@ -22,31 +43,32 @@ class App extends Component {
             width: "100vw",
             height: "100vh",
           }}
-        >
-          <h1>Hello Aj</h1>
-          <div style={styles.listsContainer}>
-            {lists.map((list) => (
-              <TrelloList
-                listId={list.id}
-                title={list.title}
-                cards={list.cards}
-                key={list.id}
-              />
-            ))}
-            <TrelloActionButton list />
-          </div>
-        </div>
+        > */}
+        <h1>Hello Aj</h1>
+        <Droppable droppableId="all-list" direction="horizontal" type="list">
+          {(provided) => (
+            <ListContainer
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            >
+              {lists.map((list,index) => (
+                <TrelloList
+                  listId={list.id}
+                  title={list.title}
+                  cards={list.cards}
+                  key={list.id}
+                  index={index}
+                />
+              ))}
+              <TrelloActionButton list />
+            </ListContainer>
+          )}
+        </Droppable>
+        {/* </div> */}
       </DragDropContext>
     );
   }
 }
-
-const styles = {
-  listsContainer: {
-    display: "flex",
-    flexDirection: "row",
-  },
-};
 
 const mapStateToProps = (state) => ({
   lists: state.lists,
