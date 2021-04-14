@@ -5,13 +5,13 @@ let cardId = 1;
 const initialState = [
   {
     title: "General Tasks",
-    id: 0,
+    id: `list-${0}`,
     cards: [
-        // dummy value
-    //   {
-    //     id: 0,
-    //     text: "",
-    //   },
+        //dummy value
+      // {
+      //   id: `card-${0}`,
+      //   text: "",
+      // },
     //   {
     //     id: 1,
     //     text: "we created a static list of card 2",
@@ -20,7 +20,7 @@ const initialState = [
   },
   {
     title: "Specific Tasks",
-    id: 1,
+    id: `list-${1}`,
     cards: [
     // dummy value
     //   {
@@ -39,7 +39,7 @@ const initialState = [
   },
   {
     title: "Pending Tasks",
-    id: 2,
+    id: `list-${2}`,
     cards: []
 }
 
@@ -51,14 +51,14 @@ const listReducer = (state = initialState, action) => {
       const newList = {
         title: action.payload,
         cards: [],
-        id: listId,
+        id: `list-${listId}`,
       };
       listId += 1;
       return [...state, newList];
     case CONSTANTS.ADD_CARD:
       const newCard = {
         text: action.payload.text,
-        id: cardId,
+        id: `card-${cardId}`,
       };
       cardId += 1;
       const newState = state.map((list) => {
